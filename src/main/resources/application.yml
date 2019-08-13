@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    jdbcUrl: @localhost
+    driver-class-name: org.postgresql.Driver
+    username:
+    password:
+    hikari:
+      idle-timeout: 10000
+      minimum-idle: 1
+      maximum-pool-size: 20
+      pool-name: vtbClinicsPool
+      auto-commit: false
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    generate-ddl: true
