@@ -3,10 +3,10 @@ spring:
     active: dev
 
   datasource:
-    jdbcUrl: @localhost
+    jdbcUrl: jdbc:postgresql://localhost:5432/medical_guide
     driver-class-name: org.postgresql.Driver
-    username:
-    password:
+    username: postgres
+    password: postgres
     hikari:
       idle-timeout: 10000
       minimum-idle: 1
@@ -15,9 +15,9 @@ spring:
       auto-commit: false
 
   jpa:
+    generate-ddl: true
     properties:
       hibernate:
         jdbc:
           lob:
             non_contextual_creation: true
-    generate-ddl: true

@@ -3,7 +3,6 @@ package ru.vtb.insurance.controller;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.vtb.insurance.domain.Clinic;
 import ru.vtb.insurance.exceptions.ClinicNotFoundException;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@Controller
+@RestController
 public class ClinicController {
     private final ClinicRepository repository;
     private final ClinicResourceAssembler assembler;
