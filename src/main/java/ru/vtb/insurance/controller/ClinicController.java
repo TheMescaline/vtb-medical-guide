@@ -17,6 +17,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class ClinicController {
     private final ClinicRepository repository;
     private final ClinicResourceAssembler assembler;
