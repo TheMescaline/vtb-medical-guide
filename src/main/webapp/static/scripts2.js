@@ -7,7 +7,8 @@ $(document).ready(function() {
         columns: [
             { data: "clinicName" },
             { data: "medicalServices" },
-            { data: "address" }
+            { data: "address" },
+            { data: "description" }
         ]
     } );
 } );

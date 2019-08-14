@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev, dbInitialization
 
   datasource:
     jdbcUrl: jdbc:postgresql://localhost:5432/medical_guide

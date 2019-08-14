@@ -21,12 +21,7 @@ $(document).ready(function () {
                             var firstGeoObject = value.geoObjects.get(0),
                                 coords = firstGeoObject.geometry.getCoordinates(),
                                 bounds = firstGeoObject.properties.get('boundedBy');
-
-                            firstGeoObject.options.set('preset', 'islands#darkBlueDotIconWithCaption');
-                            // Получаем строку с адресом и выводим в иконке геообъекта.
-                            firstGeoObject.properties.set('iconCaption', firstGeoObject.getAddressLine());
-
-                            // Добавляем первый найденный геообъект на карту.
+                            firstGeoObject.options.set('preset', 'islands#blackIcon');
                             myMap.geoObjects.add(firstGeoObject);
                         });
                     })

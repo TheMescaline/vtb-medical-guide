@@ -27,21 +27,13 @@ public class Clinic {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "x_coordinate")
-    private Double x;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "y_coordinate")
-    private Double y;
-
-    public Clinic(String clinicName, Set<MedicalService> medicalServices, String address) {
-        this(clinicName, medicalServices, address, null, null);
-    }
-
-    public Clinic(String clinicName, Set<MedicalService> medicalServices, String address, Double x, Double y) {
+    public Clinic(String clinicName, Set<MedicalService> medicalServices, String address, String description) {
         this.clinicName = clinicName;
         this.medicalServices = medicalServices;
         this.address = address;
-        this.x = x;
-        this.y = y;
+        this.description = description;
     }
 }
