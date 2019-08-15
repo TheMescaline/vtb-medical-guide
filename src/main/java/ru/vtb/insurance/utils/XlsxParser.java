@@ -63,26 +63,28 @@ public class XlsxParser {
             }
         }
 
-        switch (category.trim()) {
-            case "1":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIRST));
-            case "1бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIRST_NO_STOM));
-            case "2":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SECOND));
-            case "2.1":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SECOND_ONE));
-            case "2бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SECOND_NO_STOM));
-            case "3":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.THIRD));
-            case "3бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.THIRD_NO_STOM));
-            case "4":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FOURTH));
-            case "4бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FOURTH_NO_STOM));
-            case "5":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIFTH));
-            case "5бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIFTH_NO_STOM));
-            case "6":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SIXTH));
-            case "6бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SIXTH_NO_STOM));
-            case "7":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SEVENTH));
-            case "7бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SEVENTH_NO_STOM));
-            case "8":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.EIGHTH));
-            case "8бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.EIGHTH_NO_STOM));
-            case "9":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.NINTH));
-            default: throw new IllegalStateException("Something wrong while parsing with row " + row.getRowNum());
-        }
+        EmployeeCategory categoryEnum = EmployeeCategory.getEnumByCategory(category.trim());
+        return new HashSet<>(Arrays.asList(categoryEnum));
+//        switch (category.trim()) {
+//            case "1":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIRST));
+//            case "1бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIRST_NO_STOM));
+//            case "2":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SECOND));
+//            case "2.1":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SECOND_ONE));
+//            case "2бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SECOND_NO_STOM));
+//            case "3":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.THIRD));
+//            case "3бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.THIRD_NO_STOM));
+//            case "4":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FOURTH));
+//            case "4бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FOURTH_NO_STOM));
+//            case "5":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIFTH));
+//            case "5бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.FIFTH_NO_STOM));
+//            case "6":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SIXTH));
+//            case "6бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SIXTH_NO_STOM));
+//            case "7":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SEVENTH));
+//            case "7бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.SEVENTH_NO_STOM));
+//            case "8":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.EIGHTH));
+//            case "8бс":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.EIGHTH_NO_STOM));
+//            case "9":return new HashSet<EmployeeCategory>(Arrays.asList(EmployeeCategory.NINTH));
+//            default: throw new IllegalStateException("Something wrong while parsing with row " + row.getRowNum());
+//        }
     }
 }

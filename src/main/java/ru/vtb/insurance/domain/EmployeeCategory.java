@@ -2,6 +2,8 @@ package ru.vtb.insurance.domain;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.util.stream.Stream;
+
 public enum EmployeeCategory {
     FIRST("1"),
     FIRST_NO_STOM("1бс"),
@@ -31,5 +33,12 @@ public enum EmployeeCategory {
     @JsonValue
     final public String getCategory() {
         return category;
+    }
+
+    public static EmployeeCategory getEnumByCategory(String category) throws IllegalArgumentException {
+        return Stream.of(values())
+                .filter(e -> e.getCategory().equals(category))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(category + " not found in EmployeeCategory values"));
     }
 }
