@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=1fff9c9f-b53c-4c7d-9a56-3f80c58f56bc&lang=ru_RU" type="text/javascript"></script>
+    <script src="static/clinic.js"></script>
+
+    <style>
+    .nav-masthead .nav-link {
+    padding: .25rem 0;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+    background-color: transparent;
+    border-bottom: .25rem solid transparent;
+    }
+
+    @media (min-width: 48em) {
+        .masthead-brand {
+            float: left;
+        }
+
+        .nav-masthead {
+            float: right;
+        }
+    }
+    </style>
+
+    <title>Список клиник</title>
+</head>
+
+<body>
+
+<div class="cover-container-table d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+            <h2 class="masthead-brand">Healer app</h2>
+            <nav class="nav nav-masthead justify-content-center">
+                <h3 class="masthead-brand"><a class="nav-link" href="/">Back to map</a></h3>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main" class="inner cover">
+        <div class="col-md-auto">
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Название мед учреждения</th>
+                    <th>Оказываемые услуги</th>
+                    <th>Адрес</th>
+                    <th>Полное описание услуг для застрахованного лица</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Название мед учреждения</th>
+                    <th>Оказываемые услуги</th>
+                    <th>Адрес</th>
+                    <th>Полное описание услуг для застрахованного лица</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </main>
+
+    <footer class="mastfoot mt-auto">
+    </footer>
+</div>
+
+
+</body>
+
+</html>

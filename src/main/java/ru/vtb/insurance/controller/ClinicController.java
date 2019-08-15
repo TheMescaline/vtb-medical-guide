@@ -18,6 +18,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping(value = "/api/v1")
 public class ClinicController {
     private final ClinicRepository repository;
     private final ClinicResourceAssembler assembler;
@@ -57,8 +58,12 @@ public class ClinicController {
         Resource<Clinic> resource = assembler.toResource(repository
                 .findById(id)
                 .map(clinic -> {
+                    clinic.setClinicName(newClinic.getClinicName());
                     clinic.setAddress(newClinic.getAddress());
                     clinic.setMedicalServices(newClinic.getMedicalServices());
+                    clinic.setDescription(newClinic.getDescription());
+                    clinic.setX(newClinic.getX());
+                    clinic.setY(newClinic.getY());
                     return repository.save(clinic);
                 }).orElseGet(() -> {
                     newClinic.setId(id);
@@ -75,3 +80,4 @@ public class ClinicController {
         return ResponseEntity.noContent().build();
     }
 }
+
