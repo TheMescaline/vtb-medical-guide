@@ -66,7 +66,10 @@ $(document).ready(function () {
                                 geometry: {
                                     type: "Point",
                                     coordinates: [thiz.x, thiz.y]
-                                }
+                                },
+                                balloonContentHeader: thiz.clinicName,
+                                balloonContentBody: thiz.address,
+                                balloonContentFooter: thiz.description
                             }, {
                                 // Опции.
                                 // Иконка метки будет растягиваться под размер ее содержимого.
