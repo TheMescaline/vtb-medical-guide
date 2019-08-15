@@ -6,16 +6,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-
 import javax.sql.DataSource;
 
 @SpringBootApplication
 public class MedicalApplication {
 
     @Bean
-    @Profile("dev")
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @Profile("h2")
+    @ConfigurationProperties(prefix = "spring.h2.datasource")
     public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    @Profile("postgres")
+    @ConfigurationProperties(prefix = "spring.postgres.datasource")
+    public DataSource postgresDatasource() {
         return DataSourceBuilder.create().build();
     }
 

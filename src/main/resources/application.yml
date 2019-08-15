@@ -1,18 +1,25 @@
 spring:
   profiles:
-    active: dev, dbInitialization
+    active: h2, dbInitialization
 
-  datasource:
-    jdbcUrl: jdbc:postgresql://localhost:5432/postgres
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-    hikari:
-      idle-timeout: 10000
-      minimum-idle: 1
-      maximum-pool-size: 20
-      pool-name: vtbClinicsPool
-      auto-commit: false
+  h2:
+    datasource:
+      jdbcUrl: jdbc:h2:mem:testdb
+      driver-class-name: org.h2.Driver
+      username: sa
+      password: password
+  postgres:
+    datasource:
+      jdbcUrl: jdbc:postgresql://localhost:5432/postgres
+      driver-class-name: org.postgresql.Driver
+      username: postgres
+      password: postgres
+      hikari:
+        idle-timeout: 10000
+        minimum-idle: 1
+        maximum-pool-size: 20
+        pool-name: vtbClinicsPool
+        auto-commit: false
 
   jpa:
     generate-ddl: true
