@@ -1,6 +1,7 @@
 package ru.vtb.insurance;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -22,6 +23,13 @@ public class MedicalApplication {
     @Profile("postgres")
     @ConfigurationProperties(prefix = "spring.postgres.datasource")
     public DataSource postgresDatasource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    @Profile("mysql")
+    @ConfigurationProperties(prefix = "spring.mysql.datasource")
+    public DataSource mysqlDatasource() {
         return DataSourceBuilder.create().build();
     }
 
