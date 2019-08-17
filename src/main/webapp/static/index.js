@@ -1,30 +1,14 @@
 const cilicsApiUrl = "http://localhost:8080/api/v1/clinics/";
 
 $(document).ready(function () {
+    $('.js-example-basic-multiple').select2();
+
     $.get({
         url: cilicsApiUrl
     }).done(function (data) {
-        var employeeCategoriesSet = new Set();
-        $(data._embedded.clinicList).each(function () {
-            $(this.employeeCategories).each(function () {
-                employeeCategoriesSet.add(this.toString());
-            })
-        });
-        employeeCategoriesSet.forEach(function (val) {
-            $("#employee-category").append("<option value='" + val.toString() + "'>" + val.toString() + "</option>")
-        });
 
-        var medicalServicesSet = new Set();
-        $(data._embedded.clinicList).each(function () {
-            $(this.medicalServices).each(function () {
-                medicalServicesSet.add(this.toString());
-            })
-        });
-        medicalServicesSet.forEach(function (val) {
-            $("#medical-service").append("<option value='" + val.toString() + "'>" + val.toString() + "</option>")
-        });
-
-        $('.js-example-basic-multiple').select2();
+        fillSelect(data._embedded.clinicList, 'medicalServices', '#medical-service');
+        fillSelect(data._embedded.clinicList, 'employeeCategories', '#employee-category');
 
         ymaps.ready(init);
 
@@ -57,11 +41,24 @@ $(document).ready(function () {
                 } else {
                     putPlacemark(thiz);
                 }
-
             });
         }
     });
 });
+
+function fillSelect(clinics, clinicOption, selectId) {
+    let set = new Set();
+
+    $(clinics).each(function () {
+        $(this[clinicOption]).each(function() {
+            set.add(this.toString());
+        });
+    });
+
+    set.forEach(function(val) {
+        $(selectId).append(new Option(val));
+    });
+}
 
 function putPlacemark(clinic) {
     const point = new ymaps.Placemark([clinic.x, clinic.y], {
