@@ -1,14 +1,17 @@
-const cilicsApiUrl = "http://localhost:8080/api/v1/clinics/";
+const clinicsApiUrl = "http://localhost:8080/api/v1/clinics/";
+const clinicsFullList = new Set();
+clinicsVisibleList = new Set();
 
 $(document).ready(function () {
     $('.js-example-basic-multiple').select2();
 
     $.get({
-        url: cilicsApiUrl
+        url: clinicsApiUrl
     }).done(function (data) {
+        initClinicsList(data);
 
-        fillSelect(data._embedded.clinicList, 'medicalServices', '#medical-service');
-        fillSelect(data._embedded.clinicList, 'employeeCategories', '#employee-category');
+        fillSelect(clinicsFullList, 'medicalServices', '#medical-service');
+        fillSelect(clinicsFullList, 'employeeCategories', '#employee-category');
 
         ymaps.ready(init);
 
@@ -18,39 +21,69 @@ $(document).ready(function () {
                 zoom: 10
             });
 
-            $(data._embedded.clinicList).each(function () {
-                let thiz = this;
-                if (!thiz.x && !thiz.y) {
-                    ymaps.geocode(this.address, {
+            clinicsFullList.forEach(function (clinic) {
+                if (!clinic.x && !clinic.y) {
+                    ymaps.geocode(clinic.address, {
                         results: 1
                     }).then(function (value) {
                         const coords = value.geoObjects.get(0).geometry.getCoordinates();
 
-                        thiz.x = coords[0];
-                        thiz.y = coords[1];
+                        clinic.x = coords[0];
+                        clinic.y = coords[1];
 
                         $.ajax({
-                            url: cilicsApiUrl + thiz.id,
+                            url: clinicsApiUrl + clinic.id,
                             type: "PUT",
-                            data: JSON.stringify(thiz),
+                            data: JSON.stringify(clinic),
                             contentType: "application/json"
                         });
 
-                        putPlacemark(thiz);
+                        // putPlacemark(clinic);
                     });
-                } else {
-                    putPlacemark(thiz);
                 }
+                // } else {
+                //     putPlacemark(clinic);
+                // }
             });
+            putPlacemarks(clinicsVisibleList);
         }
     });
+
+    $('#medical-service').on('select2:select', refreshGeoPoints());
+    $('#medical-service').on('select2:unselect', refreshGeoPoints());
 });
+
+function initClinicsList(data) {
+    $(data._embedded.clinicList).each(function () {
+        clinicsFullList.add(this);
+        clinicsVisibleList.add(this);
+    });
+}
+
+function refreshGeoPoints() {
+    return function () {
+        clinicsVisibleList = new Set([...clinicsFullList]);
+        $('#medical-service').select2('data').forEach(function (selection) {
+            clinicsVisibleList.forEach(function (clinic) {
+                if (!clinic.medicalServices.includes(selection.text)) {
+                    clinicsVisibleList.delete(clinic);
+                }
+            })
+        });
+
+        //TODO Fix map geoObjects refreshing, now it's not removing all points before putPlacemarks function
+        myMap.geoObjects.each(function (geoObject) {
+            myMap.geoObjects.remove(geoObject);
+        });
+        putPlacemarks(clinicsVisibleList);
+    };
+}
 
 function fillSelect(clinics, clinicOption, selectId) {
     let set = new Set();
 
-    $(clinics).each(function () {
-        $(this[clinicOption]).each(function() {
+    clinics.forEach(function (clinic) {
+        $(clinic[clinicOption]).each(function() {
             set.add(this.toString());
         });
     });
@@ -72,6 +105,16 @@ function putPlacemark(clinic) {
     myMap.geoObjects.add(point);
 }
 
+function putPlacemarks(clinics) {
+    clinics.forEach(function (clinic) {
+        const point = new ymaps.Placemark([clinic.x, clinic.y], {
+            balloonContentHeader: clinic.clinicName,
+            balloonContentBody: clinic.address,
+            balloonContentFooter: clinic.description
+        }, {
+            preset: 'islands#blackIcon'
+        });
 
-
-
+        myMap.geoObjects.add(point);
+    })
+}
