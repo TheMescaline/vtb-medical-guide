@@ -19,7 +19,7 @@ public class LoadDatabase {
     CommandLineRunner initDataBase(ClinicRepository repository) {
         return args -> {
             for (Clinic clinic : new XlsxParser().readData("/META-INF/data.xlsx")) {
-                log.info("Init ne clinic " + repository.save(clinic));
+                log.info("Init new clinic " + repository.save(clinic));
             }
         };
     }

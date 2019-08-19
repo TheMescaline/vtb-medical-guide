@@ -1,6 +1,6 @@
 const clinicsApiUrl = "http://localhost:8080/api/v1/clinics/";
 const clinicsFullList = new Set();
-clinicsVisibleList = new Set();
+var geoObjectsCollection;
 
 $(document).ready(function () {
     $('.js-example-basic-multiple').select2();
@@ -10,12 +10,13 @@ $(document).ready(function () {
     }).done(function (data) {
         initClinicsList(data);
 
-        fillSelect(clinicsFullList, 'medicalServices', '#medical-service');
-        fillSelect(clinicsFullList, 'employeeCategories', '#employee-category');
+        initSelect(clinicsFullList, 'medicalServices', '#medical-service');
+        initSelect(clinicsFullList, 'employeeCategories', '#employee-category');
 
         ymaps.ready(init);
 
         function init() {
+            geoObjectsCollection = new ymaps.GeoObjectCollection();
             myMap = new ymaps.Map("map", {
                 center: [55.76, 37.64],
                 zoom: 10
@@ -37,84 +38,73 @@ $(document).ready(function () {
                             data: JSON.stringify(clinic),
                             contentType: "application/json"
                         });
-
-                        // putPlacemark(clinic);
                     });
                 }
-                // } else {
-                //     putPlacemark(clinic);
-                // }
             });
-            putPlacemarks(clinicsVisibleList);
+            putGeoPoints(clinicsFullList);
         }
     });
 
-    $('#medical-service').on('select2:select', refreshGeoPoints());
-    $('#medical-service').on('select2:unselect', refreshGeoPoints());
+    $('#medical-service').on('change', refreshGeoPoints('medicalServices', '#medical-service'));
+    $('#employee-category').on('change', refreshGeoPoints('employeeCategories', '#employee-category'));
 });
 
 function initClinicsList(data) {
     $(data._embedded.clinicList).each(function () {
         clinicsFullList.add(this);
-        clinicsVisibleList.add(this);
     });
 }
 
-function refreshGeoPoints() {
-    return function () {
-        clinicsVisibleList = new Set([...clinicsFullList]);
-        $('#medical-service').select2('data').forEach(function (selection) {
-            clinicsVisibleList.forEach(function (clinic) {
-                if (!clinic.medicalServices.includes(selection.text)) {
-                    clinicsVisibleList.delete(clinic);
-                }
-            })
-        });
-
-        //TODO Fix map geoObjects refreshing, now it's not removing all points before putPlacemarks function
-        myMap.geoObjects.each(function (geoObject) {
-            myMap.geoObjects.remove(geoObject);
-        });
-        putPlacemarks(clinicsVisibleList);
-    };
-}
-
-function fillSelect(clinics, clinicOption, selectId) {
+function initSelect(clinics, clinicOption, selectId) {
     let set = new Set();
 
     clinics.forEach(function (clinic) {
-        $(clinic[clinicOption]).each(function() {
+        $(clinic[clinicOption]).each(function () {
             set.add(this.toString());
         });
     });
 
-    set.forEach(function(val) {
+    set.forEach(function (val) {
         $(selectId).append(new Option(val));
     });
 }
 
-function putPlacemark(clinic) {
-    const point = new ymaps.Placemark([clinic.x, clinic.y], {
-        balloonContentHeader: clinic.clinicName,
-        balloonContentBody: clinic.address,
-        balloonContentFooter: clinic.description
-    }, {
-        preset: 'islands#blackIcon'
-    });
-
-    myMap.geoObjects.add(point);
+function filterClinicsVisibleList(selectId, clinicOption, clinics) {
+    result = new Set();
+    if ($(selectId).select2('data').length > 0) {
+        $(selectId).select2('data').forEach(function (selection) {
+            clinics.forEach(function (clinic) {
+                if (clinic[clinicOption].includes(selection.text)) {
+                    result.add(clinic);
+                }
+            })
+        });
+        return result;
+    } else {
+        return clinics;
+    }
 }
 
-function putPlacemarks(clinics) {
+function refreshGeoPoints(clinicOption, selectId) {
+    return function () {
+        myMap.geoObjects.remove(geoObjectsCollection);
+        geoObjectsCollection.removeAll();
+
+        putGeoPoints(filterClinicsVisibleList('#medical-service', 'medicalServices', filterClinicsVisibleList('#employee-category', 'employeeCategories', clinicsFullList)));
+    };
+}
+
+function putGeoPoints(clinics) {
     clinics.forEach(function (clinic) {
         const point = new ymaps.Placemark([clinic.x, clinic.y], {
-            balloonContentHeader: clinic.clinicName,
+            balloonContentHeader: "<a href='" + clinic._links.self.href + "'>" + clinic.clinicName + "</a>",
             balloonContentBody: clinic.address,
             balloonContentFooter: clinic.description
         }, {
             preset: 'islands#blackIcon'
         });
 
-        myMap.geoObjects.add(point);
-    })
+        geoObjectsCollection.add(point);
+    });
+    myMap.geoObjects.add(geoObjectsCollection);
 }
