@@ -64,6 +64,8 @@ public class ClinicController {
                     clinic.setDescription(newClinic.getDescription());
                     clinic.setX(newClinic.getX());
                     clinic.setY(newClinic.getY());
+                    clinic.setUrl(newClinic.getUrl());
+                    clinic.setPhone(newClinic.getPhone());
                     return repository.save(clinic);
                 }).orElseGet(() -> {
                     newClinic.setId(id);

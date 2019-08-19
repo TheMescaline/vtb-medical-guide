@@ -44,6 +44,12 @@ public class Clinic {
     @Column(name = "y_coordinate")
     private double y;
 
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "phone")
+    private String phone;
+
     public Clinic(long id, String clinicName, Set<EmployeeCategory> employeeCategories, Set<MedicalService> medicalServices, String address, String description) {
         this.id = id;
         this.clinicName = clinicName;

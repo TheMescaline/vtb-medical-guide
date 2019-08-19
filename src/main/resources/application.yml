@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: h2, dbInitialization
+    active: postgres, dbInitialization
 
   h2:
     datasource:

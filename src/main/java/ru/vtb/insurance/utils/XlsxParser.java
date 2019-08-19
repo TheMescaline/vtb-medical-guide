@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.vtb.insurance.domain.Clinic;
 import ru.vtb.insurance.domain.EmployeeCategory;
 import ru.vtb.insurance.domain.MedicalService;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ public class XlsxParser {
         List<Clinic> result = new ArrayList<>();
         Map<Long, Clinic> midResult = new HashMap<>();
         XSSFWorkbook data = new XSSFWorkbook(this.getClass().getResourceAsStream(file));
-        for (int i = 16; i < 66; i++) {
+        for (int i = 16; i < 2924; i++) {
             XSSFRow row = data.getSheetAt(0).getRow(i);
 
             long id = (long) row.getCell(1).getNumericCellValue();
