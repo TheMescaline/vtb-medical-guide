@@ -107,18 +107,18 @@ function refreshGeoPoints() {
 
 function computeGeoPoints(clinics) {
     clinics.forEach(function (clinic) {
-        let hdr = "";
+        let contactInfo = "";
         if (clinic.url) {
-            hdr += "<a href='" + clinic.url + "'>" + clinic.clinicName + "</a>"
-        } else {
-            hdr += clinic.clinicName;
+            contactInfo += "<a href='" + clinic.url + "'>" + clinic.url + "</a>"
         }
-
+        if (clinic.phone) {
+            contactInfo += "<br/>" + clinic.phone;
+        }
         const point = new ymaps.Placemark([clinic.x, clinic.y], {
-            balloonContentHeader: hdr,
-            balloonContentBody: clinic.address + "<br/>" + clinic.phone,
+            balloonContentHeader: clinic.clinicName,
+            balloonContentBody: clinic.address + "<br/>" + contactInfo,
             balloonContentFooter: clinic.description,
-            clusterCaption: 'Клиника <strong>' + clinic.id + '</strong>'
+            clusterCaption: clinic.clinicName
         }, {
             preset: 'islands#blackIcon'
         });
