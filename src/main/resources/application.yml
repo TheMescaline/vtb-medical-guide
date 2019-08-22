@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: heroku, dbInitialization, csv
+    active: heroku, csv
 
   h2:
     datasource:
