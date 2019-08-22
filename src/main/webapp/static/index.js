@@ -17,10 +17,16 @@ $(document).ready(function () {
         ymaps.ready(init);
 
         function init() {
-            geoObjectsCollection = new ymaps.GeoObjectCollection();
+            geoObjectsCollection = [];
             myMap = new ymaps.Map("map", {
                 center: [55.76, 37.64],
                 zoom: 10
+            }), clusterer = new ymaps.Clusterer({
+                preset: 'islands#invertedBlackClusterIcons',
+                groupByCoordinates: false,
+                clusterDisableClickZoom: true,
+                clusterHideIconOnBalloonOpen: false,
+                geoObjectHideIconOnBalloonOpen: false
             });
 
             clinicsFullList.forEach(function (clinic) {
@@ -44,7 +50,7 @@ $(document).ready(function () {
                     }
                 }
             });
-            putGeoPoints(clinicsFullList);
+            computeGeoPoints(clinicsFullList);
         }
     });
 
@@ -66,7 +72,9 @@ function initSelect(clinics, clinicOption, selectId) {
         });
     });
 
-    set.forEach(function (val) {
+    let sortedResult = Array.from(set).sort();
+
+    sortedResult.forEach(function (val) {
         $(selectId).append(new Option(val));
     });
 }
@@ -90,13 +98,14 @@ function filterClinicsVisibleList(selectId, clinicOption, clinics) {
 function refreshGeoPoints() {
     return function () {
         myMap.geoObjects.remove(geoObjectsCollection);
-        geoObjectsCollection.removeAll();
+        clusterer.removeAll();
+        geoObjectsCollection = [];
 
-        putGeoPoints(filterClinicsVisibleList('#medical-service', 'medicalServices', filterClinicsVisibleList('#employee-category', 'employeeCategories', clinicsFullList)));
+        computeGeoPoints(filterClinicsVisibleList('#medical-service', 'medicalServices', filterClinicsVisibleList('#employee-category', 'employeeCategories', clinicsFullList)));
     };
 }
 
-function putGeoPoints(clinics) {
+function computeGeoPoints(clinics) {
     clinics.forEach(function (clinic) {
         let hdr = "";
         if (clinic.url) {
@@ -108,14 +117,16 @@ function putGeoPoints(clinics) {
         const point = new ymaps.Placemark([clinic.x, clinic.y], {
             balloonContentHeader: hdr,
             balloonContentBody: clinic.address + "<br/>" + clinic.phone,
-            balloonContentFooter: clinic.description
+            balloonContentFooter: clinic.description,
+            clusterCaption: 'Клиника <strong>' + clinic.id + '</strong>'
         }, {
             preset: 'islands#blackIcon'
         });
 
-        geoObjectsCollection.add(point);
+        geoObjectsCollection.push(point);
     });
-    myMap.geoObjects.add(geoObjectsCollection);
+    clusterer.add(geoObjectsCollection);
+    myMap.geoObjects.add(clusterer);
 }
 
 //Deprecated - sends asynchronous PUT request, that can broke data in DB

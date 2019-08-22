@@ -12,7 +12,10 @@ import ru.vtb.insurance.domain.MedicalService;
 import ru.vtb.insurance.service.ClinicRepository;
 import ru.vtb.insurance.utils.DataFileParser;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 @Slf4j
 @Configuration
@@ -34,7 +37,7 @@ public class LoadDatabase {
 
     @Bean
     @Profile("migrateDataToFile")
-    CommandLineRunner migrateData(ClinicRepository repository) throws FileNotFoundException, UnsupportedEncodingException {
+    CommandLineRunner migrateData(ClinicRepository repository) throws FileNotFoundException {
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(new File("C:\\Projects\\VTB\\medical-guide\\src\\main\\resources\\META-INF\\data.csv")));
         StringBuilder builder = new StringBuilder();
         return args -> {
