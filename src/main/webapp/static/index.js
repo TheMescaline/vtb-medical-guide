@@ -1,4 +1,4 @@
-const clinicsApiUrl = "http://localhost:8080/api/v1/clinics/";
+const clinicsApiUrl = "https://vtb-medical-guide.herokuapp.com/api/v1/clinics/";
 const organizationsApiUrl = "https://search-maps.yandex.ru/v1/?apikey=ce26bd85-deb3-4b43-ad3a-ba3215efdc9a&lang=ru_RU&type=biz&results=1&text=";
 const clinicsFullList = new Set();
 let geoObjectsCollection;
