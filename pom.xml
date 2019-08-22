@@ -6,7 +6,7 @@
     <groupId>ru.vtb</groupId>
     <artifactId>medical-guide</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>medical-guide</name>
     <description>Web application with interactive map for VTB employees</description>
 
@@ -19,7 +19,7 @@
         <h2.version>1.4.199</h2.version>
         <mysql.version>8.0.17</mysql.version>
         <poi-ooxml.version>4.1.0</poi-ooxml.version>
-        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
+        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     </properties>
 
@@ -104,14 +104,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <mainClass>ru.vtb.insurance.MedicalApplication</mainClass>
+                    <layout>JAR</layout>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
