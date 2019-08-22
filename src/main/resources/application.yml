@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: h2, dbInitialization, csv
+    active: heroku, dbInitialization, csv
 
   h2:
     datasource:
@@ -25,6 +25,18 @@ spring:
       jdbcUrl: jdbc:mysql://localhost:3306/dms?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       username: root
       password: 12345
+  heroku:
+    datasource:
+      jdbcUrl: jdbc:postgresql://ec2-46-137-187-23.eu-west-1.compute.amazonaws.com:5432/dfi2b7apr34j4a
+      driver-class-name: org.postgresql.Driver
+      username: ggfmyqlkosypzn
+      password: c0173546d68c98489adfd142190dc1e67c51b691ba8e240385099f6298f87b65
+      hikari:
+        idle-timeout: 10000
+        minimum-idle: 1
+        maximum-pool-size: 20
+        pool-name: vtbClinicsPool
+        auto-commit: false
 
   jpa:
     generate-ddl: true
