@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: postgres, dbInitialization, csv
+    active: h2, dbInitialization, csv
 
   h2:
     datasource:
