@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: postgres, dbInitialization
+    active: postgres, dbInitialization, csv
 
   h2:
     datasource:
@@ -10,7 +10,7 @@ spring:
       password: password
   postgres:
     datasource:
-      jdbcUrl: jdbc:postgresql://localhost:5432/postgres
+      jdbcUrl: jdbc:postgresql://localhost:5432/medical_guide
       driver-class-name: org.postgresql.Driver
       username: postgres
       password: postgres

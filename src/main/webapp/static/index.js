@@ -24,7 +24,7 @@ $(document).ready(function () {
             });
 
             clinicsFullList.forEach(function (clinic) {
-                if ((!clinic.x && !clinic.y) || (clinic.url == null || clinic.phone == null)) {
+                if ((!clinic.x && !clinic.y)) {
                     if (!clinic.x && !clinic.y) {
                         ymaps.geocode(clinic.address, {
                             results: 1
@@ -32,29 +32,6 @@ $(document).ready(function () {
                             const coords = value.geoObjects.get(0).geometry.getCoordinates();
                             clinic.x = coords[0];
                             clinic.y = coords[1];
-                            $.ajax({
-                                url: clinicsApiUrl + clinic.id,
-                                type: "PUT",
-                                data: JSON.stringify(clinic),
-                                contentType: "application/json"
-                            }).done(function (data) {
-                                console.log(data);
-                            });
-                        });
-                    }
-                    if (clinic.url == null || clinic.phone == null) {
-                        $.ajax({
-                            url: organizationsApiUrl + clinic.clinicName,
-                            type: "GET"
-                        }).done(function (data) {
-                            clinic.url = "";
-                            clinic.phone = "";
-                            if (data.features.length > 0) {
-                                clinic.url = data.features[0].properties.CompanyMetaData.url;
-                                if (data.features[0].properties.CompanyMetaData.Phones.length > 0) {
-                                    clinic.phone = data.features[0].properties.CompanyMetaData.Phones[0].formatted;
-                                }
-                            }
                             $.ajax({
                                 url: clinicsApiUrl + clinic.id,
                                 type: "PUT",
@@ -140,3 +117,32 @@ function putGeoPoints(clinics) {
     });
     myMap.geoObjects.add(geoObjectsCollection);
 }
+
+//Deprecated - sends asynchronous PUT request, that can broke data in DB
+//Can be used to retrieve organization contact data (url/phone) by it's name
+function initializeContactData(clinic) {
+    if (clinic.url == null || clinic.phone == null) {
+        $.ajax({
+            url: organizationsApiUrl + clinic.clinicName,
+            type: "GET"
+        }).done(function (data) {
+            clinic.url = "";
+            clinic.phone = "";
+            if (data.features.length > 0) {
+                clinic.url = data.features[0].properties.CompanyMetaData.url;
+                if (data.features[0].properties.CompanyMetaData.Phones.length > 0) {
+                    clinic.phone = data.features[0].properties.CompanyMetaData.Phones[0].formatted;
+                }
+            }
+            $.ajax({
+                url: clinicsApiUrl + clinic.id,
+                type: "PUT",
+                data: JSON.stringify(clinic),
+                contentType: "application/json"
+            }).done(function (data) {
+                console.log(data);
+            });
+        });
+    }
+}
+

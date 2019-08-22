@@ -16,14 +16,14 @@ public class Clinic {
     private long id;
 
     @Column(name = "medical_services")
-    @ElementCollection(targetClass = MedicalService.class, fetch = FetchType.LAZY)
+    @ElementCollection(targetClass = MedicalService.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "medical_services", joinColumns = @JoinColumn(name = "id_clinic"))
     @Enumerated(EnumType.STRING)
     @BatchSize(size = 200)
     private Set<MedicalService> medicalServices;
 
     @Column(name = "employee_categories")
-    @ElementCollection(targetClass = EmployeeCategory.class, fetch = FetchType.LAZY)
+    @ElementCollection(targetClass = EmployeeCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "employee_categories", joinColumns = @JoinColumn(name = "id_clinic"))
     @Enumerated(EnumType.STRING)
     @BatchSize(size = 200)
@@ -50,12 +50,20 @@ public class Clinic {
     @Column(name = "phone")
     private String phone;
 
-    public Clinic(long id, String clinicName, Set<EmployeeCategory> employeeCategories, Set<MedicalService> medicalServices, String address, String description) {
+    public Clinic(long id, Set<MedicalService> medicalServices, Set<EmployeeCategory> employeeCategories, String clinicName, String address, String description) {
+        this(id, medicalServices, employeeCategories, clinicName, address, description, 0, 0, null, null);
+    }
+
+    public Clinic(long id, Set<MedicalService> medicalServices, Set<EmployeeCategory> employeeCategories, String clinicName, String address, String description, double x, double y, String url, String phone) {
         this.id = id;
-        this.clinicName = clinicName;
-        this.employeeCategories = employeeCategories;
         this.medicalServices = medicalServices;
+        this.employeeCategories = employeeCategories;
+        this.clinicName = clinicName;
         this.address = address;
         this.description = description;
+        this.x = x;
+        this.y = y;
+        this.url = url;
+        this.phone = phone;
     }
 }

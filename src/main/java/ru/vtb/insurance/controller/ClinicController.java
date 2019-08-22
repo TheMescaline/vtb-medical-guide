@@ -61,6 +61,7 @@ public class ClinicController {
                     clinic.setClinicName(newClinic.getClinicName());
                     clinic.setAddress(newClinic.getAddress());
                     clinic.setMedicalServices(newClinic.getMedicalServices());
+                    clinic.setEmployeeCategories(newClinic.getEmployeeCategories());
                     clinic.setDescription(newClinic.getDescription());
                     clinic.setX(newClinic.getX());
                     clinic.setY(newClinic.getY());
