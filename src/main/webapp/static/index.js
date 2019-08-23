@@ -4,7 +4,12 @@ const clinicsFullList = new Set();
 let geoObjectsCollection;
 
 $(document).ready(function () {
-    $('.js-example-basic-multiple').select2();
+    $('#employee-category').select2({
+        placeholder: "Вариант ДМС"
+    });
+    $('#medical-service').select2({
+        placeholder: "Оказываемые услуги"
+    });
 
     $.get({
         url: clinicsApiUrl
@@ -54,7 +59,10 @@ $(document).ready(function () {
         }
     });
 
-    $('.js-example-basic-multiple').on('change', refreshGeoPoints());
+    $('.multiselect').on('change', refreshGeoPoints());
+    $('.multiselect').on("select2:unselect", function () {
+        $('.multiselect').prop("_type",close);
+    });
 });
 
 function initClinicsList(data) {

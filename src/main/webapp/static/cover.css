@@ -40,13 +40,11 @@ body {
 }
 
 .cover-container-map {
-  /*max-width: 42em;*/
   max-width: 82em;
 }
 
 .cover-container-table {
-  /*max-width: 42em;*/
-  max-width: 102em;
+  max-width: 100%;
 }
 
 
@@ -92,6 +90,36 @@ body {
   }
 }
 
+.my-map {
+    width: 1200px;
+    height: 600px;
+    margin: auto;
+}
+
+@media (max-width: 80.625em) {
+    .my-map {
+        width: 800px;
+        height: 500px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 56.25em) {
+    .my-map {
+        width: 600px;
+        height: 500px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 43.75em) {
+    .my-map {
+        width: 400px;
+        height: 500px;
+        margin: auto;
+    }
+}
+
 
 /*
  * Cover
@@ -111,4 +139,12 @@ body {
 .mastfoot {
   color: rgba(255, 255, 255, .5);
   /*color: #909090;*/
+}
+
+.sm-select {
+  min-width: 8em;
+}
+
+.lg-select {
+  min-width: 24em;
 }

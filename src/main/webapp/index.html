@@ -6,10 +6,11 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet"/>
     <link href="static/cover.css" rel="stylesheet">
 
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=1fff9c9f-b53c-4c7d-9a56-3f80c58f56bc&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=1fff9c9f-b53c-4c7d-9a56-3f80c58f56bc&lang=ru_RU"
+            type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
     <script src="static/index.js"></script>
@@ -29,17 +30,27 @@
     </header>
 
     <main role="main" class="inner cover">
-        <div class="col-md-auto">
-            <select id="employee-category" style="min-width: 35rem" class="js-example-basic-multiple" name="states[]" multiple="multiple"></select>
-            <select id="medical-service" style="min-width: 35rem" class="js-example-basic-multiple" name="states[]" multiple="multiple"></select>
-            <hr/>
-            <div id="map" style="width: 1200px; height: 600px"></div>
+        <div class="col">
+            <div class="row justify-content-md-center">
+                <div class="col-md-auto my-1">
+                    <select id="employee-category" class="multiselect sm-select" name="states[]"
+                            multiple="multiple"></select>
+                </div>
+                <div class="col-md-auto my-1">
+                    <select id="medical-service" class="multiselect lg-select" name="states[]"
+                            multiple="multiple"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-auto my-1">
+            <div id="map" class="my-map"></div>
         </div>
     </main>
 
     <footer class="mastfoot mt-auto">
         <div class="inner">
-            <p>Made with <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://github.com/ituninant">Anton</a> and <a href="https://github.com/themescaline">Aleksey</a>.</p>
+            <p>Made with <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://github.com/ituninant">Anton</a>
+                and <a href="https://github.com/themescaline">Aleksey</a>.</p>
         </div>
     </footer>
 </div>
