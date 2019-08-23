@@ -6,7 +6,6 @@
 a,
 a:focus,
 a:hover {
-  /*color: #fff;*/
   color: #909090;
 }
 
@@ -41,6 +40,7 @@ body {
 
 .cover-container-map {
   max-width: 82em;
+    padding: 1.5rem;
 }
 
 .cover-container-table {
@@ -115,8 +115,42 @@ body {
 @media (max-width: 43.75em) {
     .my-map {
         width: 400px;
-        height: 500px;
+        height: 450px;
         margin: auto;
+    }
+
+    body {
+        box-shadow: none;
+    }
+}
+@media (max-width: 29.9375em) {
+    .my-map {
+         width: 300px;
+         height: 350px;
+         margin: auto;
+     }
+
+    body {
+        box-shadow: none;
+    }
+
+    .cover-container-map {
+        padding: 0rem;
+    }
+
+    #main-block-1 {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    #main-block-2 {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    #main-block-3 {
+        padding-right: 0;
+        padding-left: 0;
     }
 }
 
@@ -138,7 +172,6 @@ body {
  */
 .mastfoot {
   color: rgba(255, 255, 255, .5);
-  /*color: #909090;*/
 }
 
 .sm-select {
@@ -146,5 +179,7 @@ body {
 }
 
 .lg-select {
-  min-width: 24em;
+    min-width: 19em;
+    max-width: 25rem;
 }
+
