@@ -4,6 +4,32 @@ const organizationsApiUrl = "https://search-maps.yandex.ru/v1/?apikey=ce26bd85-d
 const clinicsFullList = new Set();
 let geoObjectsCollection;
 
+//Deprecated - sends asynchronous PUT request, that can broke data in DB
+//Can be used to retrieve organization contact data (url/phone) by it's name
+function initializeContactData(clinic) {
+    if (clinic.url == null || clinic.phone == null) {
+        $.ajax({
+            url: organizationsApiUrl + clinic.clinicName,
+            type: "GET"
+        }).done(function (data) {
+            clinic.url = "";
+            clinic.phone = "";
+            if (data.features.length > 0) {
+                clinic.url = data.features[0].properties.CompanyMetaData.url;
+                if (data.features[0].properties.CompanyMetaData.Phones.length > 0) {
+                    clinic.phone = data.features[0].properties.CompanyMetaData.Phones[0].formatted;
+                }
+            }
+            $.ajax({
+                url: clinicsApiUrl + clinic.id,
+                type: "PUT",
+                data: JSON.stringify(clinic),
+                contentType: "application/json"
+            });
+        });
+    }
+}
+
 function initClinicsList(data) {
     $(data._embedded.clinicList).each(function () {
         clinicsFullList.add(this);
@@ -42,16 +68,6 @@ function filterClinicsVisibleList(selectId, clinicOption, clinics) {
     }
 }
 
-function refreshGeoPoints() {
-    return function () {
-        myMap.geoObjects.remove(geoObjectsCollection);
-        clusterer.removeAll();
-        geoObjectsCollection = [];
-
-        computeGeoPoints(filterClinicsVisibleList('#medical-service', 'medicalServices', filterClinicsVisibleList('#employee-category', 'employeeCategories', clinicsFullList)));
-    };
-}
-
 function computeGeoPoints(clinics) {
     clinics.forEach(function (clinic) {
         let contactInfo = "";
@@ -76,30 +92,47 @@ function computeGeoPoints(clinics) {
     myMap.geoObjects.add(clusterer);
 }
 
-//Deprecated - sends asynchronous PUT request, that can broke data in DB
-//Can be used to retrieve organization contact data (url/phone) by it's name
-function initializeContactData(clinic) {
-    if (clinic.url == null || clinic.phone == null) {
-        $.ajax({
-            url: organizationsApiUrl + clinic.clinicName,
-            type: "GET"
-        }).done(function (data) {
-            clinic.url = "";
-            clinic.phone = "";
-            if (data.features.length > 0) {
-                clinic.url = data.features[0].properties.CompanyMetaData.url;
-                if (data.features[0].properties.CompanyMetaData.Phones.length > 0) {
-                    clinic.phone = data.features[0].properties.CompanyMetaData.Phones[0].formatted;
-                }
-            }
-            $.ajax({
-                url: clinicsApiUrl + clinic.id,
-                type: "PUT",
-                data: JSON.stringify(clinic),
-                contentType: "application/json"
+function refreshGeoPoints() {
+    return function () {
+        myMap.geoObjects.remove(geoObjectsCollection);
+        clusterer.removeAll();
+        geoObjectsCollection = [];
+
+        computeGeoPoints(filterClinicsVisibleList('#medical-service', 'medicalServices', filterClinicsVisibleList('#employee-category', 'employeeCategories', clinicsFullList)));
+    };
+}
+
+function init() {
+    geoObjectsCollection = [];
+    myMap = new ymaps.Map("map", {
+        center: [55.76, 37.64],
+        zoom: 10
+    }), clusterer = new ymaps.Clusterer({
+        preset: 'islands#invertedBlackClusterIcons',
+        groupByCoordinates: false,
+        clusterDisableClickZoom: true,
+        clusterHideIconOnBalloonOpen: false,
+        geoObjectHideIconOnBalloonOpen: false
+    });
+
+    clinicsFullList.forEach(function (clinic) {
+        if (!clinic.x && !clinic.y) {
+            ymaps.geocode(clinic.address, {
+                results: 1
+            }).then(function (value) {
+                const coords = value.geoObjects.get(0).geometry.getCoordinates();
+                clinic.x = coords[0];
+                clinic.y = coords[1];
+                $.ajax({
+                    url: clinicsApiUrl + clinic.id,
+                    type: "PUT",
+                    data: JSON.stringify(clinic),
+                    contentType: "application/json"
+                });
             });
-        });
-    }
+        }
+    });
+    computeGeoPoints(clinicsFullList);
 }
 
 $(document).ready(function () {
@@ -114,44 +147,9 @@ $(document).ready(function () {
         url: clinicsApiUrl
     }).done(function (data) {
         initClinicsList(data);
-
         initSelect(clinicsFullList, 'medicalServices', '#medical-service');
         initSelect(clinicsFullList, 'employeeCategories', '#employee-category');
-
         ymaps.ready(init);
-
-        function init() {
-            geoObjectsCollection = [];
-            myMap = new ymaps.Map("map", {
-                center: [55.76, 37.64],
-                zoom: 10
-            }), clusterer = new ymaps.Clusterer({
-                preset: 'islands#invertedBlackClusterIcons',
-                groupByCoordinates: false,
-                clusterDisableClickZoom: true,
-                clusterHideIconOnBalloonOpen: false,
-                geoObjectHideIconOnBalloonOpen: false
-            });
-
-            clinicsFullList.forEach(function (clinic) {
-                if (!clinic.x && !clinic.y) {
-                    ymaps.geocode(clinic.address, {
-                        results: 1
-                    }).then(function (value) {
-                        const coords = value.geoObjects.get(0).geometry.getCoordinates();
-                        clinic.x = coords[0];
-                        clinic.y = coords[1];
-                        $.ajax({
-                            url: clinicsApiUrl + clinic.id,
-                            type: "PUT",
-                            data: JSON.stringify(clinic),
-                            contentType: "application/json"
-                        });
-                    });
-                }
-            });
-            computeGeoPoints(clinicsFullList);
-        }
     });
 
     $('.multiselect').on('change', refreshGeoPoints());
