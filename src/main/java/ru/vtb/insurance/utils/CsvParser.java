@@ -23,7 +23,6 @@ public class CsvParser extends DataFileParser {
         while (reader.ready()) {
             String line = reader.readLine();
             String[] cells = line.split(";");
-            int length = cells.length;
 
             try {
                 Clinic newClinic = new Clinic(

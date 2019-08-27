@@ -11,7 +11,10 @@ import ru.vtb.insurance.domain.EmployeeCategory;
 import ru.vtb.insurance.domain.MedicalService;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @Profile("xlsx")
@@ -19,8 +22,7 @@ public class XlsxParser extends DataFileParser {
 
     @Override
     public Collection<Clinic> readData(String file) throws IOException {
-        List<Clinic> result = new ArrayList<>();
-        Map<Long, Clinic> midResult = new HashMap<>();
+        Map<Long, Clinic> result = new HashMap<>();
         XSSFWorkbook data = new XSSFWorkbook(this.getClass().getResourceAsStream(file));
         for (int i = 16; i < 2924; i++) {
             XSSFRow row = data.getSheetAt(0).getRow(i);
@@ -53,12 +55,12 @@ public class XlsxParser extends DataFileParser {
                     clinicName,
                     address,
                     description);
-            midResult.merge(id, clinic, (oldClinic, newClinic) -> {
+            result.merge(id, clinic, (oldClinic, newClinic) -> {
                 newClinic.getEmployeeCategories().addAll(oldClinic.getEmployeeCategories());
                 return newClinic;
             });
         }
-        return midResult.values();
+        return result.values();
     }
 
 }

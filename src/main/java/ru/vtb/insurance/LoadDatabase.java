@@ -26,7 +26,7 @@ public class LoadDatabase {
 
     @Bean
     @Profile("dbInitialization")
-    CommandLineRunner initDataBase(ClinicRepository repository) {
+    protected CommandLineRunner initDataBase(ClinicRepository repository) {
         return args -> {
 //            for (Clinic clinic : parser.readData("/META-INF/data.xlsx")) {
             for (Clinic clinic : parser.readData("/META-INF/data.csv")) {
@@ -37,7 +37,7 @@ public class LoadDatabase {
 
     @Bean
     @Profile("migrateDataToFile")
-    CommandLineRunner migrateData(ClinicRepository repository) throws FileNotFoundException {
+    protected CommandLineRunner migrateData(ClinicRepository repository) throws FileNotFoundException {
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(new File("C:\\Projects\\VTB\\medical-guide\\src\\main\\resources\\META-INF\\data.csv")));
         StringBuilder builder = new StringBuilder();
         return args -> {

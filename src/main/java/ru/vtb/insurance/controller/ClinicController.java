@@ -29,7 +29,7 @@ public class ClinicController {
     }
 
     @GetMapping("/clinics")
-    Resources<Resource<Clinic>> all() {
+    public Resources<Resource<Clinic>> all() {
         List<Resource<Clinic>> clinics = repository
                 .findAll()
                 .stream()
@@ -40,13 +40,13 @@ public class ClinicController {
     }
 
     @GetMapping("/clinics/{id}")
-    Resource<Clinic> getOne(@PathVariable Long id) {
+    public Resource<Clinic> getOne(@PathVariable Long id) {
         Clinic clinic = repository.findById(id).orElseThrow(() -> new ClinicNotFoundException(id));
         return assembler.toResource(clinic);
     }
 
     @PostMapping("/clinics")
-    ResponseEntity<?> newClinic(@RequestBody Clinic clinic) throws URISyntaxException {
+    public ResponseEntity<?> newClinic(@RequestBody Clinic clinic) throws URISyntaxException {
         Resource<Clinic> resource = assembler.toResource(repository.save(clinic));
         return ResponseEntity
                 .created(new URI(resource.getId().expand().getHref()))
@@ -54,7 +54,7 @@ public class ClinicController {
     }
 
     @PutMapping("/clinics/{id}")
-    ResponseEntity<?> replaceClinic(@RequestBody Clinic newClinic, @PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<?> replaceClinic(@RequestBody Clinic newClinic, @PathVariable Long id) throws URISyntaxException {
         Resource<Clinic> resource = assembler.toResource(repository
                 .findById(id)
                 .map(clinic -> {
@@ -78,7 +78,7 @@ public class ClinicController {
     }
 
     @DeleteMapping("/clinics/{id}")
-    ResponseEntity<?> deleteClinic(@PathVariable Long id) {
+    public ResponseEntity<?> deleteClinic(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

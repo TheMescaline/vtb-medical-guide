@@ -16,11 +16,11 @@ public abstract class DataFileParser {
 
     public abstract Collection<Clinic> readData(String file) throws IOException;
 
-    Set<MedicalService> parseServices(String unparsedLine) {
+    public Set<MedicalService> parseServices(String unparsedLine) {
         return Arrays.stream(prepareLine(unparsedLine)).map(MedicalService::valueOf).collect(Collectors.toSet());
     }
 
-    Set<EmployeeCategory> parseCategory(String unparsedLine) {
+    public Set<EmployeeCategory> parseCategory(String unparsedLine) {
         return Arrays.stream(prepareLine(unparsedLine)).map(category -> EmployeeCategory.getEnumByCategory(category.trim())).collect(Collectors.toSet());
     }
 

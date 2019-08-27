@@ -12,7 +12,7 @@ public class ClinicNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(ClinicNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String ClinicNotFoundHandler(ClinicNotFoundException e) {
+    public String clinicNotFoundHandler(ClinicNotFoundException e) {
         return e.getMessage();
     }
 }

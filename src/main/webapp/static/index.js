@@ -4,68 +4,6 @@ const organizationsApiUrl = "https://search-maps.yandex.ru/v1/?apikey=ce26bd85-d
 const clinicsFullList = new Set();
 let geoObjectsCollection;
 
-$(document).ready(function () {
-    $('#employee-category').select2({
-        placeholder: "Вариант ДМС"
-    });
-    $('#medical-service').select2({
-        placeholder: "Оказываемые услуги"
-    });
-
-    $.get({
-        url: clinicsApiUrl
-    }).done(function (data) {
-        initClinicsList(data);
-
-        initSelect(clinicsFullList, 'medicalServices', '#medical-service');
-        initSelect(clinicsFullList, 'employeeCategories', '#employee-category');
-
-        ymaps.ready(init);
-
-        function init() {
-            geoObjectsCollection = [];
-            myMap = new ymaps.Map("map", {
-                center: [55.76, 37.64],
-                zoom: 10
-            }), clusterer = new ymaps.Clusterer({
-                preset: 'islands#invertedBlackClusterIcons',
-                groupByCoordinates: false,
-                clusterDisableClickZoom: true,
-                clusterHideIconOnBalloonOpen: false,
-                geoObjectHideIconOnBalloonOpen: false
-            });
-
-            clinicsFullList.forEach(function (clinic) {
-                if ((!clinic.x && !clinic.y)) {
-                    if (!clinic.x && !clinic.y) {
-                        ymaps.geocode(clinic.address, {
-                            results: 1
-                        }).then(function (value) {
-                            const coords = value.geoObjects.get(0).geometry.getCoordinates();
-                            clinic.x = coords[0];
-                            clinic.y = coords[1];
-                            $.ajax({
-                                url: clinicsApiUrl + clinic.id,
-                                type: "PUT",
-                                data: JSON.stringify(clinic),
-                                contentType: "application/json"
-                            }).done(function (data) {
-                                console.log(data);
-                            });
-                        });
-                    }
-                }
-            });
-            computeGeoPoints(clinicsFullList);
-        }
-    });
-
-    $('.multiselect').on('change', refreshGeoPoints());
-    $('.multiselect').on("select2:unselect", function () {
-        $('.multiselect').prop("_type",close);
-    });
-});
-
 function initClinicsList(data) {
     $(data._embedded.clinicList).each(function () {
         clinicsFullList.add(this);
@@ -89,14 +27,14 @@ function initSelect(clinics, clinicOption, selectId) {
 }
 
 function filterClinicsVisibleList(selectId, clinicOption, clinics) {
-    result = new Set();
+    let result = new Set();
     if ($(selectId).select2('data').length > 0) {
         $(selectId).select2('data').forEach(function (selection) {
             clinics.forEach(function (clinic) {
                 if (clinic[clinicOption].includes(selection.text)) {
                     result.add(clinic);
                 }
-            })
+            });
         });
         return result;
     } else {
@@ -118,7 +56,7 @@ function computeGeoPoints(clinics) {
     clinics.forEach(function (clinic) {
         let contactInfo = "";
         if (clinic.url) {
-            contactInfo += "<a href='" + clinic.url + "'>" + clinic.url + "</a>"
+            contactInfo += "<a href='" + clinic.url + "'>" + clinic.url + "</a>";
         }
         if (clinic.phone) {
             contactInfo += "<br/>" + clinic.phone;
@@ -159,10 +97,66 @@ function initializeContactData(clinic) {
                 type: "PUT",
                 data: JSON.stringify(clinic),
                 contentType: "application/json"
-            }).done(function (data) {
-                console.log(data);
             });
         });
     }
 }
+
+$(document).ready(function () {
+    $('#employee-category').select2({
+        placeholder: "Вариант ДМС"
+    });
+    $('#medical-service').select2({
+        placeholder: "Оказываемые услуги"
+    });
+
+    $.get({
+        url: clinicsApiUrl
+    }).done(function (data) {
+        initClinicsList(data);
+
+        initSelect(clinicsFullList, 'medicalServices', '#medical-service');
+        initSelect(clinicsFullList, 'employeeCategories', '#employee-category');
+
+        ymaps.ready(init);
+
+        function init() {
+            geoObjectsCollection = [];
+            myMap = new ymaps.Map("map", {
+                center: [55.76, 37.64],
+                zoom: 10
+            }), clusterer = new ymaps.Clusterer({
+                preset: 'islands#invertedBlackClusterIcons',
+                groupByCoordinates: false,
+                clusterDisableClickZoom: true,
+                clusterHideIconOnBalloonOpen: false,
+                geoObjectHideIconOnBalloonOpen: false
+            });
+
+            clinicsFullList.forEach(function (clinic) {
+                if (!clinic.x && !clinic.y) {
+                    ymaps.geocode(clinic.address, {
+                        results: 1
+                    }).then(function (value) {
+                        const coords = value.geoObjects.get(0).geometry.getCoordinates();
+                        clinic.x = coords[0];
+                        clinic.y = coords[1];
+                        $.ajax({
+                            url: clinicsApiUrl + clinic.id,
+                            type: "PUT",
+                            data: JSON.stringify(clinic),
+                            contentType: "application/json"
+                        });
+                    });
+                }
+            });
+            computeGeoPoints(clinicsFullList);
+        }
+    });
+
+    $('.multiselect').on('change', refreshGeoPoints());
+    $('.multiselect').on('select2:unselect', function () {
+        $('.multiselect').prop('_type', close);
+    });
+});
 
