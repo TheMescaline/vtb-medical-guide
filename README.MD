@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c91a54230b1444b28c202efd8951184d)](https://app.codacy.com/app/TheMescaline/vtb-medical-guide?utm_source=github.com&utm_medium=referral&utm_content=TheMescaline/vtb-medical-guide&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c91a54230b1444b28c202efd8951184d)](https://app.codacy.com/app/TheMescaline/vtb-medical-guide?utm_source=github.com&utm_medium=referral&utm_content=TheMescaline/vtb-medical-guide&utm_campaign=Badge_Grade_Dashboard) [![Build Status](https://travis-ci.org/TheMescaline/vtb-medical-guide.svg?branch=master)](https://travis-ci.org/TheMescaline/vtb-medical-guide)
 
 ###### Веб-приложение для парсинга адресов клиник, обслуживающих сотрудников ВТБ ПАО по ДМС
 
