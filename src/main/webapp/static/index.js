@@ -56,13 +56,13 @@ function filterClinicsVisibleList(selectId, clinicOption, clinics) {
     let result = new Set();
     if ($(selectId).select2('data').length > 0) {
         clinics.forEach(function (clinic) {
-            let flag = true;
+            let isSuccessFiltered = true;
             $(selectId).select2('data').forEach(function (selection) {
                 if (!(clinic[clinicOption].includes(selection.text))) {
-                    flag = false;
+                    isSuccessFiltered = false;
                 }
             });
-            if (flag) {
+            if (isSuccessFiltered) {
                 result.add(clinic);
             }
         });
