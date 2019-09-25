@@ -56,12 +56,15 @@ function filterClinicsVisibleList(selectId, clinicOption, clinics) {
     let result = new Set();
     if ($(selectId).select2('data').length > 0) {
         clinics.forEach(function (clinic) {
-            result.add(clinic);
+            let flag = true;
             $(selectId).select2('data').forEach(function (selection) {
                 if (!(clinic[clinicOption].includes(selection.text))) {
-                    result.delete(clinic);
+                    flag = false;
                 }
             });
+            if (flag) {
+                result.add(clinic);
+            }
         });
         return result;
     } else {
