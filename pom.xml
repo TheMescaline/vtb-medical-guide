@@ -16,7 +16,7 @@
         <snakeyaml.version>1.24</snakeyaml.version>
         <postgresql.version>42.2.6</postgresql.version>
         <lombok.version>1.18.8</lombok.version>
-        <h2.version>1.4.199</h2.version>
+        <h2.version>2.0.206</h2.version>
         <mysql.version>8.0.17</mysql.version>
         <poi-ooxml.version>4.1.0</poi-ooxml.version>
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
