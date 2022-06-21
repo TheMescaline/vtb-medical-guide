@@ -18,7 +18,7 @@
         <spring-boot.version>2.5.12</spring-boot.version>
         <lombok.version>1.18.8</lombok.version>
         <h2.version>2.1.210</h2.version>
-        <mysql.version>8.0.17</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <poi-ooxml.version>4.1.0</poi-ooxml.version>
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
